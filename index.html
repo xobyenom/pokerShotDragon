@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<meta name="author" content="JackyLu">
+	<meta name="description" content="第一版的射龍門撲克遊戲">
+	<title>射龍門第1版</title>
+	<script src="shotDraganV1.js"></script>
+  </head>
+  <body>
+	<h1>射龍門</h1>
+	<h2>第一版</h2>
+	<h3>描述：主要是過年玩射龍門覺得機率太詭異，自己寫一個來算機率。</h3>
+	<div>
+		<button type="submit" onclick='draw()'>抽排</button>
+	</div>
+	<div>
+		<label for="card1">第一張牌</label>
+		<input name="card1" id="card1">
+		<br>
+		<label for="card2">第二張牌</label>
+		<input name="card2" id="card2">
+	</div>
+	<div>
+		<label for="compare">選擇模式：</label>
+		<input type="radio" name="compare" value="no" checked> 無
+		<input type="radio" name="compare" value="big" > 比大
+		<input type="radio" name="compare" value="smal"> 比小
+	</div>
+	<div>
+		<button type="submit" onclick='showRate()'>顯示勝率</button>
+		<button type="submit" onclick='shot()'>射門</button>
+	</div>
+	<div>
+		<label for="card3">第三張牌</label>
+		<input name="card3" id="card3">
+	</div>
+	<div>
+		<h3 id="resultShot">結果：無</h3>
+	</div>
+	<div>
+		<h3>勝率</h3>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>狀態</th>
+					<th>勝率</th>
+				</tr>
+			</thead>
+			<tbody id="rateTableBody">
+			</tbody>
+		</table>
+		
+		<h3>預測表格</h3>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>撲克牌</th>
+					<th>狀態</th>
+					<th>輸贏</th>
+				</tr>
+			</thead>
+			<tbody id="resultTableBody">
+			</tbody>
+		</table>
+	</div>
+  </body>
+</html>
