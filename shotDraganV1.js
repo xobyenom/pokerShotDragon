@@ -80,7 +80,7 @@ function draw() {
 
 	//清空計算的機率
 	let arrTb = [
-		["resultShot" , "結果"]
+		["resultShot" , "結果："]
 		,["resultTableBody" , ""]
 		,["rateTableBody" , ""]
 	];
@@ -235,8 +235,10 @@ function showRate() {
 		}else if(result === "撞柱"){
 			tieCount++;
 		}else if(result === "第一張牌"){
+			state = result;
 			result = "無";
 		}else if(result === "第二張牌"){
+			state = result;
 			result = "無";
 		}
 		// 新增一列到表格
