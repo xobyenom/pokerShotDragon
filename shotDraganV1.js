@@ -77,7 +77,17 @@ function draw() {
 	document.querySelector('input[name="compare"][value="'+compare+'"]').checked = true;
 	document.getElementById('card3').value = '';
 	displayCards(hand, ["card1", "card2"]);
-	
+
+	//清空計算的機率
+	let arrTb = [
+		["resultShot" , "結果"]
+		,["resultTableBody" , ""]
+		,["rateTableBody" , ""]
+	];
+	for (let rowTb of arrRate) {
+		let tb = document.getElementById(rowTb[0]);
+		tb.innerHTML = rowTb[1];
+	}
 	return;
 }
 
