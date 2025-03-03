@@ -27,8 +27,8 @@ A poker game. Usually played during the Chinese New Year.
 =====異動紀錄=====
 
 20250303:
-修正部分BUG-「比小」時輸贏的判斷有誤
-調整HTML相關
+1. 修正部分BUG-「比小」時輸贏的判斷有誤
+2. 調整HTML相關
 
 20250302:
 第一版新增成功 
