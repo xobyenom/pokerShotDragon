@@ -84,7 +84,7 @@ function draw() {
 		,["resultTableBody" , ""]
 		,["rateTableBody" , ""]
 	];
-	for (let rowTb of arrRate) {
+	for (let rowTb of arrTb) {
 		let tb = document.getElementById(rowTb[0]);
 		tb.innerHTML = rowTb[1];
 	}
