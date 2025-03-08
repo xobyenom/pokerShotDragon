@@ -31,8 +31,7 @@ A poker game. Usually played during the Chinese New Year.
 2. 調整JS getCardValue功能的計算方式
 2.1. 直接宣告大小，比較泛用。
 3. 優化UI UX
-3.1.
-  現在
+3.1. 現在
   兩張牌不一樣不會讓你去選到比大比小了
   兩張牌一樣時不會讓你去選到無了
 3.2. 增加計算方式方便驗證機率
