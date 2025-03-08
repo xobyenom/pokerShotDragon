@@ -6,11 +6,60 @@
 	<meta name="description" content="第一版的射龍門撲克遊戲">
 	<title>射龍門第1版</title>
 	<script src="shotDraganV1.js"></script>
+	<link rel="stylesheet" href="shotDraganV1.css">
   </head>
   <body>
 	<h1>射龍門</h1>
-	<h2>第一版</h2>
-	<h3>描述：主要是過年玩射龍門覺得機率太詭異，自己寫一個來算機率。</h3>
+	<h3>描述：主要是過年玩射龍門覺得撞柱機率太詭異，自己寫一個來算機率。</h3>
+	<div>
+		<button type="submit" onclick='checkRule()' id = 'checkRuleBtn'>觀看規則</button>
+		<br>
+		<span id = "checkRule" style="display: none;">
+			遊戲規則：
+			<br>
+			不看花色，只有管數字。抽兩張牌當龍(球)門「A、B」，第三張牌當球「C」。
+			<br>
+			可自行決定要不要射門，不射門就換下一家。並重新洗牌與抽排。
+			<br>
+			輸贏的判斷：
+			<br>
+			若點數A != B，C介於A與B之間，C!=A且C!=B，則「贏」，反之則「輸」
+			<br>
+			若點數A = B，則由玩家決定「比大」或「比小」。
+			<br>
+			「比大」：C > A ，則「贏」，反之則「輸」。
+			<br>
+			「撞柱」:當C = A ，或 C = B 時，賠2倍 若 A = B = C ，則賠3倍。
+			<br>
+			分數的計算：
+			<br>
+			比如說有N個玩家，大家商議好海底是多少後。
+			<br>
+			大家每人拿出X分數，放下檯面當海底。
+			<br>
+			所以海底會有X*N = T的分數總合。
+			<br>
+			第一個人當莊，順時針或逆時針的第二個人，當玩家。
+			<br>
+			莊家抽兩張牌後，形成球門，問玩家是否要射門?
+			<br>
+			不射門的話，則重新洗牌，換下一順位當玩家。
+			<br>
+			要射門的話由玩家決定要放下多少分數到檯面上。
+			<br>
+			例如玩家將Y分數，放到檯面上，並射門。
+			<br>
+			「贏」的話可以重海拿走Y分數，則海底會變成「T1 = T - Y」。
+			<br>
+			「輸」的話Y就進入海底，則海底會變成「T1 = T + Y」。
+			<br>
+			撞柱時則依據賠率，則海底會變成「T1 = T + Y*(2~3)」。
+			<br>
+			所以請謹慎的評估機率喔~
+			<br>
+		</span>
+		<br>
+	</div>
 	<div>
 		<button type="submit" onclick='draw()'>抽排</button>
 	</div>
@@ -18,7 +67,7 @@
 		<label for="card1">第一張牌
 			<input name="card1" id="card1">
 		</label>
-		<br>
+		
 		<label for="card2">第二張牌
 			<input name="card2" id="card2">
 		</label>
@@ -26,16 +75,16 @@
 	<div>
 		
 		<div class="compare">
-			<input type="radio" name="compare" id="no" value = "no" />
+			<input type="radio" name="compare" id="no" value = "no" disabled />
 			<label for="no">無</label>
 		</div>
 
 		<div class="compare">
-			<input type="radio" name="compare" id="big" value = "big" />
+			<input type="radio" name="compare" id="big" value = "big" disabled />
 			<label for="big">比大</label>
 		</div>
 		<div class="compare">
-			<input type="radio" name="compare" id="small" value = "small" />
+			<input type="radio" name="compare" id="small" value = "small" disabled />
 			<label for="small">比小</label>
 		</div>
 		
@@ -59,6 +108,7 @@
 				<tr>
 					<th>狀態</th>
 					<th>勝率</th>
+					<th>計算<br>方式</th>
 				</tr>
 			</thead>
 			<tbody id="rateTableBody">
