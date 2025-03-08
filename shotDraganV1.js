@@ -2,6 +2,11 @@
 const suits = ["♣️", "♦️", "♥️", "♠️"];
 const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const suitOrder = { "♣️": 1, "♦️": 2, "♥️": 3, "♠️": 4 };
+
+const valuesNum = {
+	'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, 
+	'8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13
+};
 let deck = [];
 const big = "big";
 const small = "small";
@@ -58,8 +63,19 @@ function displayCards(cards, ids) {
 		document.getElementById(ids[index]).value = card.suit + " " + card.value;
 	});
 }
-
-
+//觀看規則
+function checkRule() {
+	var checkRule = document.getElementById('checkRule');
+	var checkRuleBtn = document.getElementById('checkRuleBtn');
+	if(checkRule.style.display == 'none'){
+		checkRule.style.display = 'inline';
+		checkRuleBtn.innerHTML = '隱藏規則'
+	}else{
+		checkRule.style.display = 'none';
+		checkRuleBtn.innerHTML = '觀看規則'
+	}
+	
+}
 //抽排
 function draw() {
 	generateDeck(); // 重新生成牌組
@@ -69,25 +85,45 @@ function draw() {
 	let firstValue = getCardValue(hand[0]);
 	let secondValue = getCardValue(hand[1]);
 	var compare = "";
+	
+	let retDisable = [];//可否編輯
 	if (firstValue === secondValue) {
 		compare = big;
+		retDisable = [
+			["no" , true]
+			,["big" , false]
+			,["small" , false]
+		];
+		
 	}else{
 		compare = no;
+		retDisable = [
+			["no" , false]
+			,["big" , true]
+			,["small" , true]
+		];
 	}
-	document.querySelector('input[name="compare"][value="'+compare+'"]').checked = true;
+	document.querySelector('input[name="compare"][id="'+compare+'"]').checked = true;
+	for (let rowDisable of retDisable) {
+		document.getElementById(rowDisable[0]).disabled = rowDisable[1];
+	}
+	
+	
 	document.getElementById('card3').value = '';
 	displayCards(hand, ["card1", "card2"]);
 
-	//清空計算的機率
-	let arrTb = [
-		["resultShot" , "結果："]
-		,["resultTableBody" , ""]
-		,["rateTableBody" , ""]
-	];
-	for (let rowTb of arrTb) {
-		let tb = document.getElementById(rowTb[0]);
-		tb.innerHTML = rowTb[1];
-	}
+	////清空計算的機率
+	//let arrTb = [
+	//	["resultShot" , "結果："]
+	//	,["resultTableBody" , ""]
+	//	,["rateTableBody" , ""]
+	//];
+	//for (let rowTb of arrTb) {
+	//	let tb = document.getElementById(rowTb[0]);
+	//	tb.innerHTML = rowTb[1];
+	//}
+	showRate();
+	
 	return;
 }
 
@@ -147,11 +183,7 @@ function shot() {
 
 // 轉換數字大小（A=1, 2~10, J=11, Q=12, K=13）
 function getCardValue(card) {
-	if (card.value === "A") return 1;
-	if (card.value === "J") return 11;
-	if (card.value === "Q") return 12;
-	if (card.value === "K") return 13;
-	return parseInt(card.value);
+	return valuesNum[card.value];
 }
 
 function compareCard(card1 , card2) {
@@ -215,7 +247,7 @@ function showRate() {
 	}
 	
 	// 統計變數
-	let winCount = 0, loseCount = 0, tieCount = 0, totalCount = 0;
+	var winCount = 0, loseCount = 0, tieCount = 0, totalCount = 0;
 
 	// 清空舊表格
 	let resultTableBody = document.getElementById("resultTableBody");
@@ -250,13 +282,18 @@ function showRate() {
 
 	// 計算勝率
 	totalCount = winCount + loseCount + tieCount;
-	let winRate = totalCount > 0 ? (winCount / totalCount * 100) : 0;
-	let lostRate = totalCount > 0 ? (loseCount / totalCount * 100) : 0;
-	let tieRate = ((100 - (winRate + lostRate)));
+	var winRate = totalCount > 0 ? (winCount / totalCount * 100) : 0;
+	var lostRate = totalCount > 0 ? (loseCount / totalCount * 100) : 0;
+	//var tieRate = ((100 - (winRate + lostRate)));
+	var tieRate = totalCount > 0 ? (tieCount / totalCount * 100) : 0;
 	
-	let showWinRate = winRate.toFixed(2) + "%";
-	let showLostRate = lostRate.toFixed(2) + "%";
-	let showTieRate = tieRate.toFixed(2) + "%";
+	var strWinRate = winCount.toString() + "/" + totalCount.toString();
+	var strLostRate = loseCount.toString() + "/" + totalCount.toString();
+	var strTieRate = tieCount.toString() + "/" + totalCount.toString();
+	
+	var showWinRate = winRate.toFixed(2) + "%";
+	var showLostRate = lostRate.toFixed(2) + "%";
+	var showTieRate = tieRate.toFixed(2) + "%";
 	
 	// 顯示勝率
 	// 清空舊表格
@@ -264,16 +301,23 @@ function showRate() {
 	rateTableBody.innerHTML = "";
 	
 	let arrRate = [
-		["贏" , showWinRate]
-		,["輸" , showLostRate]
-		,["撞住" , showTieRate]
+		//狀態,勝率,計算方式
+		["贏" , showWinRate,strWinRate]
+		,["輸" , showLostRate,strLostRate]
+		,["撞柱" , showTieRate,strTieRate]
 	];
 	
 	for (let rowRate of arrRate) {
 		let row = rateTableBody.insertRow();
-		row.insertCell(0).innerText = rowRate[0];
-		row.insertCell(1).innerText = rowRate[1];
+		//console.log("===="+rowRate.length);
+		for (let i = 0; i < rowRate.length; i++) {
+			let cell = row.insertCell(i);
+			cell.innerText = rowRate[i];
+			//console.log("===="+rowRate[i]);
+			if(i == 2){//計算方式
+				cell.classList.add("text-right");// 讓「計算方式」靠右，增加CSS
+			}
+		}
 	}
 	return;
 }
-
